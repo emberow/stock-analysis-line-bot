@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config();
 const line = require('@line/bot-sdk');
 const express = require('express');
 
@@ -34,7 +35,7 @@ function handleEvent(event) {
     // ignore non-text-message event
     return Promise.resolve(null);
   }
-
+  console.log(event.message.text);
   // create a echoing text message
   const echo = { type: 'text', text: event.message.text };
 
