@@ -1,13 +1,23 @@
 {
-  "name": "echo-bot",
+  "name": "echo-bot-ts",
   "version": "0.0.0",
-  "description": "An example LINE bot just to echo messages",
-  "main": "index.js",
+  "description": "An example LINE bot with TypeScript made to echo messages",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "start cmd /k node . && start cmd /k ngrok http 3000"
+    "start": "npm run build && start cmd /k node . && start cmd /k ngrok http 3000",
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc"
   },
+  "author": "Nicholas Dwiarto <nicholasdwiarto@yahoo.com> (https://nicholasdw.com)",
   "dependencies": {
     "@line/bot-sdk": "^7.3.0",
-    "express": "^4.16.3"
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.14",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.3"
   }
 }
