@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bot_sdk_1 = require("@line/bot-sdk");
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
+const stock = __importStar(require("./utils/stock"));
 dotenv.config();
 // Setup all LINE client and Express configurations.
 const clientConfig = {
@@ -72,22 +73,11 @@ app.get('/', async (_, res) => {
 // This route is used for the Webhook.
 app.post('/webhook', bot_sdk_1.middleware(middlewareConfig), async (req, res) => {
     const events = req.body.events;
-    // Process all of the received events asynchronously.
-    const results = await Promise.all(events.map(async (event) => {
-        try {
-            await textEventHandler(event);
-        }
-        catch (err) {
-            if (err instanceof Error) {
-                console.error(err);
-            }
-            // Return an error message.
-            return res.status(500).json({
-                status: 'error',
-            });
-        }
-    }));
-    // Return a successfull message.
+    const results = await events.map(async (event) => {
+        event.message.text = "hi";
+        console.log(await stock.getStockInfo('5880'));
+        await textEventHandler(event);
+    });
     return res.status(200).json({
         status: 'success',
         results,

@@ -2,6 +2,7 @@
 import { ClientConfig, Client, middleware, MiddlewareConfig, WebhookEvent, TextMessage, MessageAPIResponseBase } from '@line/bot-sdk';
 import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
+import * as stock from "./utils/stock";
 dotenv.config()
 
 
@@ -67,32 +68,19 @@ app.post(
   middleware(middlewareConfig),
   async (req: Request, res: Response): Promise<Response> => {
     const events: WebhookEvent[] = req.body.events;
-
-    // Process all of the received events asynchronously.
-    const results = await Promise.all(
-      events.map(async (event: WebhookEvent) => {
-        try {
-          await textEventHandler(event);
-        } catch (err: unknown) {
-          if (err instanceof Error) {
-            console.error(err);
-          }
-
-          // Return an error message.
-          return res.status(500).json({
-            status: 'error',
-          });
-        }
+    
+    const results = await events.map(async (event: any) => {
+        event.message.text = "hi";
+        console.log(await stock.getStockInfo('5880'));
+        await textEventHandler(event);
       })
-    );
-
-    // Return a successfull message.
     return res.status(200).json({
       status: 'success',
       results,
     });
   }
 );
+
 
 // Create a server and listen to it.
 app.listen(PORT, () => {
