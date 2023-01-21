@@ -74,8 +74,8 @@ app.get('/', async (_, res) => {
 app.post('/webhook', bot_sdk_1.middleware(middlewareConfig), async (req, res) => {
     const events = req.body.events;
     const results = await events.map(async (event) => {
-        event.message.text = "hi";
-        console.log(await stock.getStockInfo('5880'));
+        const responseText = await stock.getStockInfo('5880');
+        event.message.text = responseText;
         await textEventHandler(event);
     });
     return res.status(200).json({
