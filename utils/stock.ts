@@ -16,12 +16,12 @@ export const getStockInfo = async (stockNum: string) => {
     responseText = await getMovingAverage(5, stockPriceArray, responseText);
     responseText = await getMovingAverage(20, stockPriceArray, responseText);
     responseText = await getMovingAverage(60, stockPriceArray, responseText);
-    console.log(responseText);
+    responseText = await getRsi(5, stockPriceArray, responseText);
     return responseText;
 }
 
 // 參數為交易日天數
-export const getMovingAverage = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+const getMovingAverage = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
     let movingAverage = stockPriceArray.slice(0, numberOfDay).reduce(function(total, price){
         return total + price;
     }) / numberOfDay;
@@ -30,3 +30,25 @@ export const getMovingAverage = async (numberOfDay: number, stockPriceArray: num
     return responseText;
 }
 
+const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+    const priceArray = stockPriceArray.slice(0, numberOfDay+1).reverse();
+    const upArrays: number[] = [];
+    const downArrays: number[] = [];
+    for (let i = 1; i < priceArray.length; i++){
+        const result = priceArray[i] - priceArray[i-1];
+        if (result > 0){
+            upArrays.push(result);
+        } else {
+            downArrays.push(result * -1);
+        }
+    }
+    const upAvg = upArrays.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    }) / numberOfDay;
+    const downAvg = (downArrays.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    })) / numberOfDay;
+    const Rsi = upAvg / (upAvg + downAvg) * 100;
+    responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
+    return responseText;
+}

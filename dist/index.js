@@ -74,9 +74,16 @@ app.get('/', async (_, res) => {
 app.post('/webhook', bot_sdk_1.middleware(middlewareConfig), async (req, res) => {
     const events = req.body.events;
     const results = await events.map(async (event) => {
-        const responseText = await stock.getStockInfo('5880');
-        event.message.text = responseText;
-        await textEventHandler(event);
+        const stockNum = event.message.text;
+        try {
+            const responseText = await stock.getStockInfo(stockNum);
+            event.message.text = responseText;
+            await textEventHandler(event);
+        }
+        catch (err) {
+            event.message.text = "無效的股票代碼";
+            await textEventHandler(event);
+        }
     });
     return res.status(200).json({
         status: 'success',

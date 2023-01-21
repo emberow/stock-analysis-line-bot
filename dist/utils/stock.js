@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMovingAverage = exports.getStockInfo = void 0;
+exports.getStockInfo = void 0;
 const axios_1 = __importDefault(require("axios"));
 const getStockInfo = async (stockNum) => {
     let curTime = new Date();
@@ -18,10 +18,10 @@ const getStockInfo = async (stockNum) => {
     stockPriceArray = stockPriceArray.reverse();
     let responseText = '';
     // 分別得到5MA 20MA 60MA
-    responseText = await exports.getMovingAverage(5, stockPriceArray, responseText);
-    responseText = await exports.getMovingAverage(20, stockPriceArray, responseText);
-    responseText = await exports.getMovingAverage(60, stockPriceArray, responseText);
-    console.log(responseText);
+    responseText = await getMovingAverage(5, stockPriceArray, responseText);
+    responseText = await getMovingAverage(20, stockPriceArray, responseText);
+    responseText = await getMovingAverage(60, stockPriceArray, responseText);
+    responseText = await getRsi(5, stockPriceArray, responseText);
     return responseText;
 };
 exports.getStockInfo = getStockInfo;
@@ -34,4 +34,28 @@ const getMovingAverage = async (numberOfDay, stockPriceArray, responseText) => {
     responseText += `${numberOfDay}MA = ${movingAverage}\n`;
     return responseText;
 };
-exports.getMovingAverage = getMovingAverage;
+const getRsi = async (numberOfDay, stockPriceArray, responseText) => {
+    const priceArray = stockPriceArray.slice(0, numberOfDay + 1).reverse();
+    const upArrays = [];
+    const downArrays = [];
+    for (let i = 1; i < priceArray.length; i++) {
+        const result = priceArray[i] - priceArray[i - 1];
+        if (result > 0) {
+            upArrays.push(result);
+        }
+        else {
+            downArrays.push(result * -1);
+        }
+    }
+    const upAvg = upArrays.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    }) / numberOfDay;
+    const downAvg = (downArrays.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    })) / numberOfDay;
+    console.log(upArrays, downArrays);
+    console.log(upAvg, downAvg);
+    const Rsi = upAvg / (upAvg + downAvg) * 100;
+    responseText += `RSI(${numberOfDay}) = ${Rsi}\n`;
+    return responseText;
+};
