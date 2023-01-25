@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStockInfo = void 0;
 const axios_1 = __importDefault(require("axios"));
-const getStockInfo = async (stockNum) => {
+const stockWebCrawler = async (stockNum) => {
     let curTime = new Date();
     curTime = curTime.getTime();
     curTime = Math.round(curTime.valueOf() / 1000);
@@ -15,13 +15,17 @@ const getStockInfo = async (stockNum) => {
     stockPriceArray = await Promise.all(stockPriceArray.map(async (price) => {
         return Math.round(price.valueOf() * 1000) / 1000;
     }));
-    stockPriceArray = stockPriceArray.reverse();
+    return stockPriceArray;
+};
+const getStockInfo = async (stockNum) => {
+    let stockPriceArray = await stockWebCrawler(stockNum);
+    stockPriceArray = stockPriceArray.reverse().slice(2);
     let responseText = '';
     // 分別得到5MA 20MA 60MA
     responseText = await getMovingAverage(5, stockPriceArray, responseText);
     responseText = await getMovingAverage(20, stockPriceArray, responseText);
     responseText = await getMovingAverage(60, stockPriceArray, responseText);
-    responseText = await getRsi(5, stockPriceArray, responseText);
+    responseText = await getRsi2(5, stockPriceArray, responseText);
     return responseText;
 };
 exports.getStockInfo = getStockInfo;
@@ -53,9 +57,43 @@ const getRsi = async (numberOfDay, stockPriceArray, responseText) => {
     const downAvg = (downArrays.reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
     })) / numberOfDay;
-    console.log(upArrays, downArrays);
-    console.log(upAvg, downAvg);
     const Rsi = upAvg / (upAvg + downAvg) * 100;
+    responseText += `RSI(${numberOfDay}) = ${Rsi}\n`;
+    return responseText;
+};
+const getRsi2 = async (numberOfDay, stockPriceArray, responseText) => {
+    // 指數型rsi
+    // n為numberOfDay
+    // 只取前六筆，算完後的結果 = 舊值/n*(n-1)+新值/n
+    let priceArray = stockPriceArray.reverse();
+    priceArray = stockPriceArray.slice(0, numberOfDay + 1);
+    let upValue = 0;
+    let downValue = 0;
+    for (let i = 1; i < priceArray.length; i++) {
+        const result = priceArray[i] - priceArray[i - 1];
+        if (result > 0) {
+            upValue += result;
+        }
+        else {
+            downValue -= result;
+        }
+    }
+    upValue = upValue / numberOfDay;
+    downValue = downValue / numberOfDay;
+    priceArray = stockPriceArray.slice(numberOfDay + 1);
+    for (let i = 1; i < priceArray.length; i++) {
+        const result = priceArray[i] - priceArray[i - 1];
+        upValue = (upValue / numberOfDay) * (numberOfDay - 1);
+        downValue = (downValue / numberOfDay) * (numberOfDay - 1);
+        if (result > 0) {
+            upValue += (result / numberOfDay);
+        }
+        else if (result < 0) {
+            downValue += (-1) * result / numberOfDay;
+        }
+    }
+    let Rsi = upValue / (upValue + downValue) * 100;
+    Rsi = Math.round(Rsi * 100) / 100;
     responseText += `RSI(${numberOfDay}) = ${Rsi}\n`;
     return responseText;
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getStockInfo = async (stockNum: string) => {
+const stockWebCrawler = async (stockNum: string) => {
     let curTime: any = new Date();
     curTime = curTime.getTime();
     curTime = Math.round(curTime.valueOf()/1000);
@@ -10,6 +10,11 @@ export const getStockInfo = async (stockNum: string) => {
     stockPriceArray = await Promise.all(stockPriceArray.map(async(price: any) => {
         return Math.round(price.valueOf() * 1000) / 1000;
     }))
+    return stockPriceArray;
+};
+
+export const getStockInfo = async (stockNum: string) => {
+    let stockPriceArray = await stockWebCrawler(stockNum);
     stockPriceArray = stockPriceArray.reverse();
     let responseText = '';
     // 分別得到5MA 20MA 60MA
@@ -30,25 +35,62 @@ const getMovingAverage = async (numberOfDay: number, stockPriceArray: number[], 
     return responseText;
 }
 
+// 暴力型rsi，看盤軟體都是使用指數型rsi，因此以指數型rsi為主
+// const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+//     const priceArray = stockPriceArray.slice(0, numberOfDay+1).reverse();
+//     const upArrays: number[] = [];
+//     const downArrays: number[] = [];
+//     for (let i = 1; i < priceArray.length; i++){
+//         const result = priceArray[i] - priceArray[i-1];
+//         if (result > 0){
+//             upArrays.push(result);
+//         } else {
+//             downArrays.push(result * -1);
+//         }
+//     }
+//     const upAvg = upArrays.reduce((accumulator, currentValue) => {
+//         return accumulator + currentValue;
+//     }) / numberOfDay;
+//     const downAvg = (downArrays.reduce((accumulator, currentValue) => {
+//         return accumulator + currentValue;
+//     })) / numberOfDay;
+//     const Rsi = upAvg / (upAvg + downAvg) * 100;
+//     responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
+//     return responseText;
+// }
+
 const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
-    const priceArray = stockPriceArray.slice(0, numberOfDay+1).reverse();
-    const upArrays: number[] = [];
-    const downArrays: number[] = [];
+    // 指數型rsi
+    // n為numberOfDay
+    // 只取前六筆，算完後的結果 = 舊值/n*(n-1)+新值/n
+    let priceArray = stockPriceArray.reverse();
+    priceArray = stockPriceArray.slice(0, numberOfDay+1);
+    let upValue: number = 0;
+    let downValue: number = 0;
     for (let i = 1; i < priceArray.length; i++){
         const result = priceArray[i] - priceArray[i-1];
         if (result > 0){
-            upArrays.push(result);
+            upValue += result;
         } else {
-            downArrays.push(result * -1);
+            downValue -= result;
         }
     }
-    const upAvg = upArrays.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-    }) / numberOfDay;
-    const downAvg = (downArrays.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-    })) / numberOfDay;
-    const Rsi = upAvg / (upAvg + downAvg) * 100;
+    upValue = upValue / numberOfDay;
+    downValue = downValue / numberOfDay;
+    priceArray = stockPriceArray.slice(numberOfDay+1);
+    
+    for( let i = 1; i < priceArray.length; i++){
+        const result = priceArray[i] - priceArray[i-1];
+        upValue = (upValue / numberOfDay) * (numberOfDay - 1);
+        downValue = (downValue / numberOfDay) * (numberOfDay - 1);
+        if (result > 0){
+            upValue += (result / numberOfDay);
+        } else if (result < 0){
+            downValue += (-1) * result / numberOfDay;
+        }
+    }
+    let Rsi = upValue / (upValue + downValue) * 100;
+    Rsi = Math.round(Rsi * 100) / 100;
     responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
     return responseText;
 }
