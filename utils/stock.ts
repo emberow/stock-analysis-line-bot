@@ -21,7 +21,7 @@ export const getStockInfo = async (stockNum: string) => {
     responseText = await getMovingAverage(5, stockPriceArray, responseText);
     responseText = await getMovingAverage(20, stockPriceArray, responseText);
     responseText = await getMovingAverage(60, stockPriceArray, responseText);
-    responseText = await getRsi(5, stockPriceArray, responseText);
+    responseText = await getRsi(6, stockPriceArray, responseText);
     return responseText;
 }
 
@@ -94,3 +94,7 @@ const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseTe
     responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
     return responseText;
 }
+
+// const getKD = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+//     const RSV = 
+// }

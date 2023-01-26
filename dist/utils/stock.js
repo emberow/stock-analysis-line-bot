@@ -19,13 +19,13 @@ const stockWebCrawler = async (stockNum) => {
 };
 const getStockInfo = async (stockNum) => {
     let stockPriceArray = await stockWebCrawler(stockNum);
-    stockPriceArray = stockPriceArray.reverse().slice(2);
+    stockPriceArray = stockPriceArray.reverse();
     let responseText = '';
     // 分別得到5MA 20MA 60MA
     responseText = await getMovingAverage(5, stockPriceArray, responseText);
     responseText = await getMovingAverage(20, stockPriceArray, responseText);
     responseText = await getMovingAverage(60, stockPriceArray, responseText);
-    responseText = await getRsi2(5, stockPriceArray, responseText);
+    responseText = await getRsi(6, stockPriceArray, responseText);
     return responseText;
 };
 exports.getStockInfo = getStockInfo;
@@ -38,30 +38,30 @@ const getMovingAverage = async (numberOfDay, stockPriceArray, responseText) => {
     responseText += `${numberOfDay}MA = ${movingAverage}\n`;
     return responseText;
 };
+// 暴力型rsi，看盤軟體都是使用指數型rsi，因此以指數型rsi為主
+// const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+//     const priceArray = stockPriceArray.slice(0, numberOfDay+1).reverse();
+//     const upArrays: number[] = [];
+//     const downArrays: number[] = [];
+//     for (let i = 1; i < priceArray.length; i++){
+//         const result = priceArray[i] - priceArray[i-1];
+//         if (result > 0){
+//             upArrays.push(result);
+//         } else {
+//             downArrays.push(result * -1);
+//         }
+//     }
+//     const upAvg = upArrays.reduce((accumulator, currentValue) => {
+//         return accumulator + currentValue;
+//     }) / numberOfDay;
+//     const downAvg = (downArrays.reduce((accumulator, currentValue) => {
+//         return accumulator + currentValue;
+//     })) / numberOfDay;
+//     const Rsi = upAvg / (upAvg + downAvg) * 100;
+//     responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
+//     return responseText;
+// }
 const getRsi = async (numberOfDay, stockPriceArray, responseText) => {
-    const priceArray = stockPriceArray.slice(0, numberOfDay + 1).reverse();
-    const upArrays = [];
-    const downArrays = [];
-    for (let i = 1; i < priceArray.length; i++) {
-        const result = priceArray[i] - priceArray[i - 1];
-        if (result > 0) {
-            upArrays.push(result);
-        }
-        else {
-            downArrays.push(result * -1);
-        }
-    }
-    const upAvg = upArrays.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-    }) / numberOfDay;
-    const downAvg = (downArrays.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-    })) / numberOfDay;
-    const Rsi = upAvg / (upAvg + downAvg) * 100;
-    responseText += `RSI(${numberOfDay}) = ${Rsi}\n`;
-    return responseText;
-};
-const getRsi2 = async (numberOfDay, stockPriceArray, responseText) => {
     // 指數型rsi
     // n為numberOfDay
     // 只取前六筆，算完後的結果 = 舊值/n*(n-1)+新值/n
@@ -97,3 +97,6 @@ const getRsi2 = async (numberOfDay, stockPriceArray, responseText) => {
     responseText += `RSI(${numberOfDay}) = ${Rsi}\n`;
     return responseText;
 };
+// const getKD = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
+//     const RSV = 
+// }
