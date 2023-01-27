@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getKD } from './TechnicalAnalysis/Kd';
 import { getMovingAverage } from './TechnicalAnalysis/MoveAverage';
 import { getRsi } from './TechnicalAnalysis/Rsi';
 
@@ -22,6 +23,8 @@ const stockWebCrawler = async (stockNum: string) => {
 export const getStockInfo = async (stockNum: string) => {
     let stockPriceArray = await stockWebCrawler(stockNum);
     let stockClosePriceArray = stockPriceArray.close;
+    let stockLowPriceArray = stockPriceArray.low;
+    let stockHighPriceArray = stockPriceArray.high;
     stockClosePriceArray = stockClosePriceArray.reverse();
     let responseText = '';
     // 分別得到5MA 20MA 60MA
@@ -29,6 +32,8 @@ export const getStockInfo = async (stockNum: string) => {
     responseText = await getMovingAverage(20, stockClosePriceArray, responseText);
     responseText = await getMovingAverage(60, stockClosePriceArray, responseText);
     responseText = await getRsi(6, stockClosePriceArray, responseText);
+    responseText = await getKD(9, stockClosePriceArray, stockLowPriceArray, stockHighPriceArray, responseText);
+
     return responseText;
 }
 
