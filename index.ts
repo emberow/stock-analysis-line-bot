@@ -1,5 +1,5 @@
 // Import all dependencies, mostly using destructuring for better view.
-import { ClientConfig, Client, middleware, MiddlewareConfig, WebhookEvent, TextMessage, MessageAPIResponseBase } from '@line/bot-sdk';
+import { ClientConfig, Client, middleware, MiddlewareConfig, WebhookEvent, TextMessage, MessageAPIResponseBase, Message } from '@line/bot-sdk';
 import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as stock from "./utils/stock";
@@ -87,6 +87,13 @@ app.post(
   }
 );
 
+setInterval (async () => {
+  const message: Message = {
+    type: 'text',
+    text: 'push message test',
+  };
+  client.pushMessage('U5955656d94c4c77b92c1e51959db691c', message);
+}, 1000 * 86400);
 
 // Create a server and listen to it.
 app.listen(PORT, () => {

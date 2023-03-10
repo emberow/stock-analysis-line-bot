@@ -17,7 +17,10 @@ export const getKD = async (
         kValue = kValue * (2 / 3) + RSV * (1 / 3);
         dValue = dValue * (2 / 3) + kValue * (1 / 3);
     }
-    responseText += `K(${ numberOfDay }) = ${ kValue }\n`;
-    responseText += `D(${ numberOfDay }) = ${ dValue }\n`;
+    kValue = Math.round(kValue * 100) / 100;
+    dValue = Math.round(dValue * 100) / 100;
+    
+    responseText += `K(${ numberOfDay }) = ${ kValue }%\n`;
+    responseText += `D(${ numberOfDay }) = ${ dValue }%\n`;
     return responseText;
 };

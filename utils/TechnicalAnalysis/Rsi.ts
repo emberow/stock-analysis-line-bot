@@ -2,7 +2,6 @@ export const getRsi = async (numberOfDay: number, stockPriceArray: number[], res
     // 指數型rsi
     // n為numberOfDay
     // 只取前六筆，算完後的結果 = 舊值/n*(n-1)+新值/n
-    stockPriceArray.reverse();
     let priceArray = stockPriceArray.slice(0, numberOfDay+1);
     let upValue: number = 0;
     let downValue: number = 0;
@@ -30,6 +29,6 @@ export const getRsi = async (numberOfDay: number, stockPriceArray: number[], res
     }
     let Rsi = upValue / (upValue + downValue) * 100;
     Rsi = Math.round(Rsi * 100) / 100;
-    responseText += `RSI(${ numberOfDay }) = ${ Rsi }\n`;
+    responseText += `RSI(${ numberOfDay }) = ${ Rsi }%\n`;
     return responseText;
 }
