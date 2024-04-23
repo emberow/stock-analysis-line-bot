@@ -10,8 +10,8 @@
 
 <img src="https://github.com/emberow/blog-image/blob/main/BlogImg/stock-analyze%20demo.gif?raw=true"  style="width: 40vw;" > <br>
 
-### technical analysis indicators
-- Kd
+### Technical analysis indicators
+- KD
 - RSI
 - MA (MoveAverage)
 - BollingerBand
@@ -19,7 +19,7 @@
 ## Quick start 
 
 
-### run backend
+### Backend
 ```
 # use node 21
 $ cd backend
@@ -29,7 +29,7 @@ $ export CHANNEL_SECRET=xxx
 $ npm run start
 ```
 
-### run ngrok
+### Run ngrok
 ```
 $ ngrok config add-authtoken {your ngrok auth token}
 $ ngrok http 3000
