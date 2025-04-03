@@ -1,3 +1,5 @@
+// 計算 KD 指標
+
 export const getKD = async (
     numberOfDay: number,
     stockPriceArray: number[],

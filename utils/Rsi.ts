@@ -1,3 +1,5 @@
+// 計算 RSI 指標
+
 export const getRsi = async (numberOfDay: number, stockPriceArray: number[], responseText: string) => {
     // 指數型rsi
     // n為numberOfDay

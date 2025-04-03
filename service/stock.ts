@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { getKD } from './TechnicalAnalysis/Kd';
-import { getMovingAverage } from './TechnicalAnalysis/MoveAverage';
-import { getRsi } from './TechnicalAnalysis/Rsi';
-import { getBollingerBands } from './TechnicalAnalysis/BollingerBand';
+import { getKD } from '../utils/Kd';
+import { getMovingAverage } from '../utils/MoveAverage';
+import { getRsi } from '../utils/Rsi';
+import { getBollingerBands } from '../utils/BollingerBand';
 
 
 const stockWebCrawler = async (stockNum: string) => {
