@@ -3,6 +3,7 @@ import { ClientConfig, Client, middleware, MiddlewareConfig, WebhookEvent, TextM
 import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as stock from "./service/stock";
+import { scheduleDailyMessage } from './scheduler';
 dotenv.config()
 
 
@@ -87,23 +88,8 @@ app.post(
   }
 );
 
-app.post(
-  '/test',
-  async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json({
-      status: 'success',
-      results: 'test',
-    });
-  }
-);
-
-setInterval (async () => {
-  const message: Message = {
-    type: 'text',
-    text: 'push message test',
-  };
-  client.pushMessage('U5955656d94c4c77b92c1e51959db691c', message);
-}, 1000 * 86400);
+// schedule 發送訊息
+scheduleDailyMessage();
 
 // Create a server and listen to it.
 app.listen(PORT, () => {
