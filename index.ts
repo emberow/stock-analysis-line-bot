@@ -89,7 +89,11 @@ app.post(
 );
 
 // schedule 發送訊息
-scheduleDailyMessage();
+// scheduleDailyMessage();
+import * as financingMaintenanceRate from "./utils/FinancingMaintenanceRate";
+financingMaintenanceRate.crawler().then((data) => {
+  console.log("data: ", data);
+});
 
 // Create a server and listen to it.
 app.listen(PORT, () => {

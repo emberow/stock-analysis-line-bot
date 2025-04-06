@@ -3,10 +3,14 @@
 import { chromium } from "playwright";
 
 export const crawler = async () => {
-    const browser = await chromium.launch({ headless: false }); // 启动浏览器
+    const browser = await chromium.launch({ headless: true }); // 启动浏览器
     const page = await browser.newPage();
     
     await page.goto('https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin'); // 打开网页
+    console.log("Landed on page")
+
+    await page.screenshot({ path: '/pics/screenshot.png', fullPage: true });
+    console.log("screanshot created")
 
     const res = await page.evaluate(() => {
         const scriptContent = [...document.querySelectorAll('script')]
