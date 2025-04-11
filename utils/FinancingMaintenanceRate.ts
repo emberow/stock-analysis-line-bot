@@ -5,7 +5,7 @@ import * as path from "path";
 const COOKIE_FILE_PATH = path.resolve(__dirname, "cookies.json");
 
 export const crawler = async () => {
-    const browser = await chromium.launch({ headless: false }); // Launch browser
+    const browser = await chromium.launch({ headless: true }); // Launch browser
     const context = await browser.newContext();
 
     // Load cookies if the file exists
