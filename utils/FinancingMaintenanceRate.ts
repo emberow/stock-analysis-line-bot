@@ -2,10 +2,17 @@ import { chromium } from "playwright";
 import * as fs from "fs";
 import * as path from "path";
 
-const COOKIE_FILE_PATH = path.resolve(__dirname, "cookies.json");
+// Ensure the /cookies directory exists
+const COOKIES_DIR = path.resolve(__dirname, "../cookies");
+if (!fs.existsSync(COOKIES_DIR)) {
+    fs.mkdirSync(COOKIES_DIR, { recursive: true });
+}
+
+// Define the path for the cookies file
+const COOKIE_FILE_PATH = path.resolve(COOKIES_DIR, "cookies.json");
 
 export const crawler = async () => {
-    const browser = await chromium.launch({ headless: true }); // Launch browser
+    const browser = await chromium.launch({ headless: false }); // Launch browser
     const context = await browser.newContext();
 
     // Load cookies if the file exists
@@ -23,7 +30,18 @@ export const crawler = async () => {
     // Save the latest cookies to the file (always save cookies, even if the file didn't exist before)
     const cookies = await context.cookies();
     fs.writeFileSync(COOKIE_FILE_PATH, JSON.stringify(cookies, null, 2), "utf-8");
-    console.log("Cookies saved to file.");
+    console.log("Cookies saved to file in /cookies directory.");
+
+    // Ensure the /pics directory exists
+    const PICS_DIR = path.resolve(__dirname, "../pics");
+    if (!fs.existsSync(PICS_DIR)) {
+        fs.mkdirSync(PICS_DIR, { recursive: true });
+    }
+
+    // Save the screenshot in the /pics directory
+    const screenshotPath = path.resolve(PICS_DIR, "screenshot.png");
+    await page.screenshot({ path: screenshotPath });
+    console.log(`Screenshot saved to ${screenshotPath}`);
 
     const res = await page.evaluate(() => {
         const scriptContent = [...document.querySelectorAll('script')]
