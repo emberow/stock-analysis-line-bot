@@ -7,6 +7,7 @@ COPY ./package*.json ./
 
 RUN npm i 
 RUN npx playwright install --with-deps chromium
+RUN apt install xauth -y
 RUN apt-get update && apt-get install -y xvfb
 
 COPY . .
