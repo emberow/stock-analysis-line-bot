@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000/tcp
 
 # 使用 xvfb 運行應用，支持有頭模式
-CMD ["xvfb-run", "--server-args='-screen 0 1920x1080x24'", "npm", "run", "start"]
+CMD ["xvfb-run", "--server-args", "-screen 0 1920x1080x24", "npm", "run", "start"]
