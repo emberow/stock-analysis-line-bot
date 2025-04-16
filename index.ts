@@ -4,6 +4,8 @@ import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as stock from "./service/stock";
 import { scheduleDailyMessage } from './scheduler';
+import { sendMessage } from './utils/messageSender';
+import * as financingMaintenanceRate from './utils/FinancingMaintenanceRate';
 dotenv.config()
 
 
@@ -84,6 +86,28 @@ app.post(
     return res.status(200).json({
       status: 'success',
       results,
+    });
+  }
+);
+
+// This route is used for the Webhook.
+app.get(
+  '/test',
+  async (req: Request, res: Response): Promise<Response> => {
+      try {
+        console.log("Scheduling task started...");
+        const data = await financingMaintenanceRate.crawler();
+        console.log("crawler financingMaintenanceRate data successfully");
+        const message = `${data[0]}大盤融資維持率: ${data[1]}%`;
+        const userId = "U5955656d94c4c77b92c1e51959db691c";
+        await sendMessage(userId, message);
+        console.log("Message sent successfully");
+      }
+      catch (error) {
+        console.error("Error in scheduled task:", error);
+      }
+    return res.status(200).json({
+      status: 'success',
     });
   }
 );

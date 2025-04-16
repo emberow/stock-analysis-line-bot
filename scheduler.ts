@@ -4,7 +4,7 @@ import * as financingMaintenanceRate from './utils/FinancingMaintenanceRate';
 
 // 每天早上9點寄送大盤融資維持率訊息
 export const scheduleDailyMessage = () => {
-  schedule('10 1 * * *', async () => {
+  schedule('0 1 * * *', async () => {
     try {
       console.log("Scheduling task started...");
       const data = await financingMaintenanceRate.crawler();

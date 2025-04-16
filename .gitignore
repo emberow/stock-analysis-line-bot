@@ -3,3 +3,5 @@
 ngrok.exe
 /dist
 .DS_Store
+/cookies
+/pics

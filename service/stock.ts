@@ -3,7 +3,7 @@ import { getKD } from '../utils/Kd';
 import { getMovingAverage } from '../utils/MoveAverage';
 import { getRsi } from '../utils/Rsi';
 import { getBollingerBands } from '../utils/BollingerBand';
-
+import { StockInfo } from '../type/StockPrice';
 
 const stockWebCrawler = async (stockNum: string) => {
     let curTime: any = new Date();

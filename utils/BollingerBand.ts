@@ -1,4 +1,5 @@
 // 計算布林通道
+import { StockInfo } from "../type/StockPrice";
   
 export function getBollingerBands(stockInfo: StockInfo, n: number = 20, multiplier: number = 2, responseText: string) {
     // 計算Typical Price

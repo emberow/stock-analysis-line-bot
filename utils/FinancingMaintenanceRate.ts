@@ -13,8 +13,9 @@ const COOKIE_FILE_PATH = path.resolve(COOKIES_DIR, "cookies.json");
 
 export const crawler = async () => {
     const browser = await chromium.launch({ headless: false }); // Launch browser
-    const context = await browser.newContext();
-
+    const context = await browser.newContext({
+        javaScriptEnabled: true, // 確保 JavaScript 已啟用
+    });
     // Load cookies if the file exists
     if (fs.existsSync(COOKIE_FILE_PATH)) {
         const cookies = JSON.parse(fs.readFileSync(COOKIE_FILE_PATH, "utf-8"));
@@ -25,40 +26,34 @@ export const crawler = async () => {
     }
 
     const page = await context.newPage();
-    await page.goto('https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin'); // Open webpage
+    // Open webpage
+    await page.goto('https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin'); 
+    // 等待網路請求完成
+    await page.waitForLoadState('networkidle'); 
 
-    // Save the latest cookies to the file (always save cookies, even if the file didn't exist before)
+    // 儲存cookie到檔案
     const cookies = await context.cookies();
     fs.writeFileSync(COOKIE_FILE_PATH, JSON.stringify(cookies, null, 2), "utf-8");
     console.log("Cookies saved to file in /cookies directory.");
 
-    // Ensure the /pics directory exists
+    // 網站截圖
     const PICS_DIR = path.resolve(__dirname, "../pics");
     if (!fs.existsSync(PICS_DIR)) {
         fs.mkdirSync(PICS_DIR, { recursive: true });
     }
-
-    // Save the screenshot in the /pics directory
     const screenshotPath = path.resolve(PICS_DIR, "screenshot.png");
     await page.screenshot({ path: screenshotPath });
     console.log(`Screenshot saved to ${screenshotPath}`);
 
-    const res = await page.evaluate(() => {
-        const scriptContent = [...document.querySelectorAll('script')]
-            .map(script => script.innerText)
-            .find(content => content.includes('let chart ='));
-
-        const match = scriptContent && scriptContent.match(/let chart = ({[\s\S]*?});/);
-        if (match && match[1]) {
-            const chart = JSON.parse(match[1]);
-            const seriesData = JSON.parse(chart.series_last_rows.replace(/&quot;/g, '"'));
-            const targetData = seriesData[0][1];
-            return targetData;
-        }
-
-        return null;
+    const value = await page.evaluate(() => {
+        const element = document.querySelector('div.stat-val > span.val');
+        return (element as HTMLElement).innerText;
+    });
+    const date = await page.evaluate(() => {
+        const element = document.querySelector('div.date-label');
+        return (element as HTMLElement).innerText;
     });
 
     await browser.close();
-    return res;
+    return [date, value];
 };

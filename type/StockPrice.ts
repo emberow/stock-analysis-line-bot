@@ -1,4 +1,4 @@
-interface StockInfo {
+export interface StockInfo {
     low: number[];
     high: number[];
     open: number[];
