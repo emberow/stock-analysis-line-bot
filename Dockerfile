@@ -6,8 +6,9 @@ WORKDIR /app
 COPY ./package*.json ./
 
 RUN npm i 
-RUN apt install xauth -y
-RUN apt-get update && apt-get install -y xvfb
+RUN apt-get update
+RUN apt-get install -y xauth
+RUN apt-get install -y xvfb
 
 COPY . .
 
