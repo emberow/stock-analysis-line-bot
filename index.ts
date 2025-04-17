@@ -2,12 +2,11 @@
 import { ClientConfig, Client, middleware, MiddlewareConfig, WebhookEvent, TextMessage, MessageAPIResponseBase, Message } from '@line/bot-sdk';
 import express, { Application, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
-import * as stock from "./service/stock";
+import * as stock from "./service/Stock";
 import { scheduleDailyMessage } from './scheduler';
-import { sendMessage } from './utils/messageSender';
-import * as financingMaintenanceRate from './utils/FinancingMaintenanceRate';
-dotenv.config()
+import * as overallEconomicIndicators from './service/OverallEconomicIndicators';
 
+dotenv.config()
 
 // Setup all LINE client and Express configurations.
 const clientConfig: ClientConfig = {
@@ -95,13 +94,7 @@ app.get(
   '/test',
   async (req: Request, res: Response): Promise<Response> => {
       try {
-        console.log("Scheduling task started...");
-        const data = await financingMaintenanceRate.crawler();
-        console.log("crawler financingMaintenanceRate data successfully");
-        const message = `${data[0]}大盤融資維持率: ${data[1]}%`;
-        const userId = "U5955656d94c4c77b92c1e51959db691c";
-        await sendMessage(userId, message);
-        console.log("Message sent successfully");
+        await overallEconomicIndicators.sendDataToLine();
       }
       catch (error) {
         console.error("Error in scheduled task:", error);

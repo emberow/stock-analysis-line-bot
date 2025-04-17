@@ -16,7 +16,6 @@ export const sendMessage = async (userId: string, message: string) => {
       type: 'text',
       text: message,
     });
-    console.log('Message sent successfully!');
   } catch (err) {
     console.error('Error sending message:', err);
   }

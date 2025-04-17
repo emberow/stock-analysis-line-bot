@@ -17,7 +17,9 @@
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "node-cron": "^3.0.3",
-    "playwright": "^1.51.1",
+    "puppeteer": "^24.6.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0"
   },
