@@ -6,7 +6,8 @@
 
 ## Features
 
-- **Enter a stock symbol and get technical analysis indicators**
+- **Enter a stock symbol and get technical analysis indicators.**
+- **Fetch overall economic indicators every morning at 9 a.m. to assist in making judgments.**
 
 <img src="https://github.com/emberow/blog-image/blob/main/BlogImg/stock-analyze%20demo.gif?raw=true"  style="width: 40vw;" > <br>
 
@@ -22,7 +23,6 @@
 ### Backend
 ```
 # use node 21
-$ cd backend
 $ npm i
 $ export CHANNEL_ACCESS_TOKEN=xxx
 $ export CHANNEL_SECRET=xxx
@@ -64,6 +64,11 @@ CNN 恐懼與貪婪指數為採用美股市場情緒相關變數所編製的綜�
 其調查方式只詢問 AAII 會員投資人一個問題：是否認為未來六個月的股市方向是向上（看多），沒有變化（持平）或下降（看空）。 AAII 於 1987 年開始進行投資人情緒調查，原先透過明信片郵寄方式，目前則是利用網路投票。
 
 根據過去經驗，這項指標被許多人視為市場的反向指標。舉例來說：過度看空的狀況出現時常伴隨著落底訊號；相對地，當看多情緒開始增加到高點時，股市多會出現修正。
+
+### [台灣-台股本益比與台股趨勢](https://www.macromicro.me/charts/13940/tai-wan-tai-gu-ben-yi-bi-yu-tai-gu-qu-shi)
+
+大盤PE長期區間15-20
+選擇低於大盤本益比且無衰退的企業個股，如果此公司的盈餘目前處於成長狀態，那麼就更具安全邊際。
 
 ### [景氣燈號](https://index.ndc.gov.tw/n/zh_tw)
 

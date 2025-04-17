@@ -25,7 +25,7 @@ export const crawler = async () => {
     await page.setViewport({ width: 1280, height: 720 });
 
     // 打開目標網頁
-    await page.goto('https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin', {
+    await page.goto('https://www.macromicro.me/charts/47/vix', {
         waitUntil: 'networkidle2',
     });
 
@@ -34,7 +34,7 @@ export const crawler = async () => {
     if (!fs.existsSync(PICS_DIR)) {
         fs.mkdirSync(PICS_DIR, { recursive: true });
     }
-    const screenshotPath = path.resolve(PICS_DIR, 'FinancingMaintenanceRate_screenshot.png');
+    const screenshotPath = path.resolve(PICS_DIR, 'VIX_screenshot.png');
     await page.screenshot({ path: screenshotPath });
     console.log(`Screenshot saved to ${screenshotPath}`);
 

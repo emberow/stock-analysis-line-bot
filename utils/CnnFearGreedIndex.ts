@@ -49,8 +49,6 @@ export const crawler = async () => {
         return element ? element.textContent : null;
     });
 
-    console.log(`Extracted value: ${value}, date: ${date}`);
-
     // 關閉瀏覽器
     await browser.close();
     return [date, value];

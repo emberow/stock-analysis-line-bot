@@ -1,5 +1,6 @@
 import * as financingMaintenanceRate from '../utils/FinancingMaintenanceRate';
 import * as cnnFearGreedIndex from '../utils/CnnFearGreedIndex';
+import * as vix from '../utils/Vix';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -11,6 +12,15 @@ export const sendDataToLine = async () => {
     console.log("crawler cnnFearGreedIndex data successfully");
     message += `${fearGreedIndex[0]}美國-CNN恐懼與貪婪指數: ${fearGreedIndex[1]}\n`;
 
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 爬蟲 VIX 指數
+    const vixIndex = await vix.crawler();
+    console.log("crawler vixIndex data successfully");
+    message += `${vixIndex[0]}VIX波動率指數: ${vixIndex[1]}\n`;
+
+    // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
 
     // 爬蟲大盤融資維持率
@@ -23,7 +33,7 @@ export const sendDataToLine = async () => {
     await sendMessage(userId, message);
     console.log("Message sent successfully");
 
-    return message;
+    return;
 }
 
 
