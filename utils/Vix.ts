@@ -8,7 +8,7 @@ puppeteer.use(StealthPlugin());
 
 export const crawler = async () => {
     const browser = await puppeteer.launch({
-        headless: false, // 設置為 false 以啟用有頭模式
+        headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
