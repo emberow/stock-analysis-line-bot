@@ -1,4 +1,4 @@
-FROM node:20-bullseye
+FROM --platform=linux/amd64 node:20 AS build_amd64
 
 WORKDIR /app
 
