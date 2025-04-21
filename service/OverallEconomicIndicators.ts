@@ -2,6 +2,7 @@ import * as financingMaintenanceRate from '../utils/FinancingMaintenanceRate';
 import * as cnnFearGreedIndex from '../utils/CnnFearGreedIndex';
 import * as vix from '../utils/Vix';
 import * as aaiiInvestorSentimentIndex from '../utils/AaiiInvestorSentimentIndex';
+import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -30,7 +31,15 @@ export const sendDataToLine = async () => {
     message += `${aaiiIndex[0]}美國-AAII散戶投資人情緒指數:\n`;
     message += `看空: ${aaiiIndex?.[1]?.[0]}\n`;
     message += `持平: ${aaiiIndex?.[1]?.[1]}\n`;
-    message += `看空: ${aaiiIndex?.[1]?.[2]}\n\n`;
+    message += `看多: ${aaiiIndex?.[1]?.[2]}\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 台灣景氣對策燈號
+    const taiwanEconomicIndex = await taiwanEconomicIndicators.crawler();
+    console.log("crawler taiwanEconomicIndicators data successfully");
+    message += `${taiwanEconomicIndex[0]}台灣景氣對策燈號: ${taiwanEconomicIndex[1]}\n\n`;
 
     // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));

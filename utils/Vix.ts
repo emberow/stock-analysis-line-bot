@@ -26,7 +26,7 @@ export const crawler = async () => {
 
     // 打開目標網頁
     await page.goto('https://www.macromicro.me/charts/47/vix', {
-        waitUntil: 'networkidle2',
+        waitUntil: 'networkidle0', // 等待網頁完全加載
     });
 
     // 網站截圖

@@ -25,7 +25,7 @@ export const crawler = async () => {
     await page.setViewport({ width: 1280, height: 720 });
 
     // 打開目標網頁
-    await page.goto('https://www.macromicro.me/collections/34/us-stock-relative/50108/cnn-fear-and-greed', {
+    await page.goto('https://index.ndc.gov.tw/n/zh_tw', {
         waitUntil: 'networkidle0', // 等待網頁完全加載
     });
 
@@ -34,19 +34,20 @@ export const crawler = async () => {
     if (!fs.existsSync(PICS_DIR)) {
         fs.mkdirSync(PICS_DIR, { recursive: true });
     }
-    const screenshotPath = path.resolve(PICS_DIR, 'CnnFearGreedIndex_screenshot.png');
+    const screenshotPath = path.resolve(PICS_DIR, 'TaiwanEconomicIndicators_screenshot.png');
     await page.screenshot({ path: screenshotPath });
     console.log(`Screenshot saved to ${screenshotPath}`);
 
     // 提取數據
     const value = await page.evaluate(() => {
-        const element = document.querySelector('div.stat-val > span.val');
+        const element = document.querySelector('div.fraction > span.ng-binding');
         return element ? element.textContent : null;
     });
 
     const date = await page.evaluate(() => {
-        const element = document.querySelector('div.date-label');
-        return element ? element.textContent : null;
+        const year = document.querySelector('div.year.ng-binding')?.textContent;
+        const month = document.querySelector('div.month > span.ng-binding')?.textContent;
+        return year + '-' + month;
     });
 
     // 關閉瀏覽器
