@@ -5,6 +5,7 @@ import * as aaiiInvestorSentimentIndex from '../utils/AaiiInvestorSentimentIndex
 import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
 import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
 import * as taiwanUnfulfilledOrdersReduceCustomerInventory from '../utils/TaiwanUnfulfilledOrdersReduceCustomerInventory';
+import * as taiwanPMIIndex from '../utils/TaiwanPMIIndex';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -59,10 +60,21 @@ export const sendDataToLine = async () => {
     console.log("crawler taiwanStockPE data successfully");
     message += `${taiwanStockPE[0]}台灣-台股本益比: ${taiwanStockPE[1]}\n\n`;
 
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
     // 台灣-未完成訂單減客戶存貨
     const TuorciIndex = await taiwanUnfulfilledOrdersReduceCustomerInventory.crawler();
     console.log("crawler taiwanUnfulfilledOrdersReduceCustomerInventory data successfully");
     message += `${TuorciIndex[0]}台灣-未完成訂單減客戶存貨: ${TuorciIndex[1]} Index\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 台灣-PMI製造業指數
+    const taiwanPMI = await taiwanPMIIndex.crawler();
+    console.log("crawler taiwanPMI data successfully");
+    message += `${taiwanPMI[0]}台灣-PMI製造業指數: ${taiwanPMI[1]}`;
 
     // Send message to LINE
     const userId = "U5955656d94c4c77b92c1e51959db691c";
