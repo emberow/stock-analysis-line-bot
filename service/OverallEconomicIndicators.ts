@@ -4,6 +4,7 @@ import * as vix from '../utils/Vix';
 import * as aaiiInvestorSentimentIndex from '../utils/AaiiInvestorSentimentIndex';
 import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
 import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
+import * as taiwanUnfulfilledOrdersReduceCustomerInventory from '../utils/TaiwanUnfulfilledOrdersReduceCustomerInventory';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -15,24 +16,24 @@ export const sendDataToLine = async () => {
     console.log("crawler cnnFearGreedIndex data successfully");
     message += `${fearGreedIndex[0]}美國-CNN恐懼與貪婪指數: ${fearGreedIndex[1]}\n\n`;
 
-    // // 隨機延遲 10-15 秒
+    // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
 
-    // // 爬蟲 VIX 指數
+    // 爬蟲 VIX 指數
     const vixIndex = await vix.crawler();
     console.log("crawler vixIndex data successfully");
     message += `${vixIndex[0]}VIX波動率指數: ${vixIndex[1]}\n\n`;
 
-    // // 隨機延遲 10-15 秒
+    // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
 
     // 美國-AAII 散戶投資人情緒指數
     const aaiiIndex = await aaiiInvestorSentimentIndex.crawler();
     console.log("crawler aaiiIndex data successfully");
     message += `${aaiiIndex[0]}美國-AAII散戶投資人情緒指數:\n`;
-    message += `看空: ${aaiiIndex?.[1]?.[0]}\n`;
-    message += `持平: ${aaiiIndex?.[1]?.[1]}\n`;
-    message += `看多: ${aaiiIndex?.[1]?.[2]}\n\n`;
+    message += `看空: ${aaiiIndex?.[1]?.[0]}% \n`;
+    message += `持平: ${aaiiIndex?.[1]?.[1]}% \n`;
+    message += `看多: ${aaiiIndex?.[1]?.[2]}% \n\n`;
 
     // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
@@ -56,7 +57,12 @@ export const sendDataToLine = async () => {
     // 台灣-台股本益比與台股趨勢
     const taiwanStockPE = await taiwanPeRatio.crawler();
     console.log("crawler taiwanStockPE data successfully");
-    message += `${taiwanStockPE[0]}台灣-台股本益比: ${taiwanStockPE[1]}\n`;
+    message += `${taiwanStockPE[0]}台灣-台股本益比: ${taiwanStockPE[1]}\n\n`;
+
+    // 台灣-未完成訂單減客戶存貨
+    const TuorciIndex = await taiwanUnfulfilledOrdersReduceCustomerInventory.crawler();
+    console.log("crawler taiwanUnfulfilledOrdersReduceCustomerInventory data successfully");
+    message += `${TuorciIndex[0]}台灣-未完成訂單減客戶存貨: ${TuorciIndex[1]} Index\n\n`;
 
     // Send message to LINE
     const userId = "U5955656d94c4c77b92c1e51959db691c";
