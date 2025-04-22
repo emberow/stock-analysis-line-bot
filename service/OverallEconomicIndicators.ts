@@ -3,6 +3,7 @@ import * as cnnFearGreedIndex from '../utils/CnnFearGreedIndex';
 import * as vix from '../utils/Vix';
 import * as aaiiInvestorSentimentIndex from '../utils/AaiiInvestorSentimentIndex';
 import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
+import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -47,7 +48,15 @@ export const sendDataToLine = async () => {
     // 爬蟲大盤融資維持率
     const financingMaintenanceRateData = await financingMaintenanceRate.crawler();
     console.log("crawler financingMaintenanceRate data successfully");
-    message += `${financingMaintenanceRateData[0]}大盤融資維持率: ${financingMaintenanceRateData[1]}%\n`;
+    message += `${financingMaintenanceRateData[0]}大盤融資維持率: ${financingMaintenanceRateData[1]}%\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 台灣-台股本益比與台股趨勢
+    const taiwanStockPE = await taiwanPeRatio.crawler();
+    console.log("crawler taiwanStockPE data successfully");
+    message += `${taiwanStockPE[0]}台灣-台股本益比: ${taiwanStockPE[1]}\n`;
 
     // Send message to LINE
     const userId = "U5955656d94c4c77b92c1e51959db691c";

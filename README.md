@@ -45,9 +45,10 @@ Use ngrok fordwarding URL as webhook URL, and then paste it into line develop
 原本策略為定期定額買入大盤，以獲取平均市場報酬。
 使用爬蟲每天進行數據撈取，並使用以下指標，來進行擇時買入，以獲取超越大盤報酬。
 
-### [美國-S&P 500席勒通膨調整後本益比](https://www.macromicro.me/collections/34/us-stock-relative/410/us-sp500-cyclically-adjusted-price-earnings-ratio)
+<!-- 註解原因為看不到歷史圖表資料 -->
+<!-- ### [美國-S&P 500席勒通膨調整後本益比](https://www.macromicro.me/collections/34/us-stock-relative/410/us-sp500-cyclically-adjusted-price-earnings-ratio)
 
-Robert Shiller（2013 年諾貝爾經濟學獎得主、耶魯大學教授，著有非理性繁榮）提出的 Shiller 週期性調整本益比 ，是將一般的本益比透過過去 10 年的通貨膨脹與季節因子調整，可以反映較為實質的股價評價。
+Robert Shiller（2013 年諾貝爾經濟學獎得主、耶魯大學教授，著有非理性繁榮）提出的 Shiller 週期性調整本益比 ，是將一般的本益比透過過去 10 年的通貨膨脹與季節因子調整，可以反映較為實質的股價評價。 -->
 
 ### [美國-CNN恐懼與貪婪指數](https://www.macromicro.me/collections/34/us-stock-relative/50108/cnn-fear-and-greed)
 
@@ -94,9 +95,10 @@ CNN 恐懼與貪婪指數為採用美股市場情緒相關變數所編製的綜�
 台灣製造業採購經理人指數（Manufacturing Purchasing Managers’Index，PMI）為一企業商業活動綜合性指標，具有即時發布及領先景氣循環轉折點等特性，每月對受訪企業的採購經理人進行調查，並依調查結果編製成的指數，以新增訂單數量、生產數量、人力僱用數量、存貨，以及供應商交貨時間等 5 項細項擴散指數（Diffusion Index）綜合編製而成 ，均以 50 作為分界點， 50 以上代表景氣擴張， 50 以下代表景氣衰退。
 其中製造業 PMI 又分為六大產業，包括電子暨光學產業、基礎原物料產業、電力暨機械設備產業、化學暨生技醫療產業、食品暨紡織產業、交通工具產業
 
-### [台股預估成交量](https://www.wantgoo.com/index/0000)
+<!-- 對於長期投來說不太重要，所以先註解 -->
+<!-- ### [台股預估成交量](https://www.wantgoo.com/index/0000)
 
 - 上漲時成交量大 => 多頭氣勢強、買盤積極，續漲機率高
 - 上漲時成交量小 => 買盤不積極，漲勢可能乏力，需小心假突破或主力拉高出貨
 - 下跌時成交量大 => 出現恐慌性賣壓，也可能是主力承接，短期底部訊號
-- 下跌時成交量小 => 市場觀望、信心不足，沒有人願意低接，可能繼續下跌或橫盤整理
+- 下跌時成交量小 => 市場觀望、信心不足，沒有人願意低接，可能繼續下跌或橫盤整理 -->
