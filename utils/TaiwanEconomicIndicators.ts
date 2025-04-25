@@ -28,6 +28,9 @@ export const crawler = async () => {
     await page.goto('https://index.ndc.gov.tw/n/zh_tw', {
         waitUntil: 'networkidle0', // 等待網頁完全加載
     });
+    
+    // 等待 5 秒以確保網頁完全加載
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     // 網站截圖
     const PICS_DIR = path.resolve(__dirname, '../pics');
