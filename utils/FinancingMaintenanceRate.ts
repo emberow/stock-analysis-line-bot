@@ -26,8 +26,11 @@ export const crawler = async () => {
 
     // 打開目標網頁
     await page.goto('https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin', {
-        waitUntil: 'networkidle0', // 等待網頁完全加載
+        waitUntil: 'networkidle2', // 等待網頁完全加載
     });
+
+    // 等待 5 秒以確保網頁完全加載
+    await new Promise(resolve => setTimeout(resolve, 5000));
 
     // 網站截圖
     const PICS_DIR = path.resolve(__dirname, '../pics');
