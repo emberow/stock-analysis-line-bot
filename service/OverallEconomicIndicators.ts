@@ -6,6 +6,7 @@ import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
 import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
 import * as taiwanUnfulfilledOrdersReduceCustomerInventory from '../utils/TaiwanUnfulfilledOrdersReduceCustomerInventory';
 import * as taiwanPMIIndex from '../utils/TaiwanPMIIndex';
+import * as usdNtdExchangeRate from '../utils/UsdNtdExchangeRate';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -74,7 +75,15 @@ export const sendDataToLine = async () => {
     // 台灣-PMI製造業指數
     const taiwanPMI = await taiwanPMIIndex.crawler();
     console.log("crawler taiwanPMI data successfully");
-    message += `${taiwanPMI[0]}台灣-PMI製造業指數: ${taiwanPMI[1]}`;
+    message += `${taiwanPMI[0]}台灣-PMI製造業指數: ${taiwanPMI[1]}\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 美元/新台幣匯率
+    const UsdNtdExchangeRate = await usdNtdExchangeRate.crawler();
+    console.log("crawler taiwanUsdNtd data successfully");
+    message += `${UsdNtdExchangeRate[0]}台灣-美元/新台幣匯率: ${UsdNtdExchangeRate[1]}`;
 
     // Send message to LINE
     const userId = "U5955656d94c4c77b92c1e51959db691c";
