@@ -7,11 +7,20 @@ import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
 import * as taiwanUnfulfilledOrdersReduceCustomerInventory from '../utils/TaiwanUnfulfilledOrdersReduceCustomerInventory';
 import * as taiwanPMIIndex from '../utils/TaiwanPMIIndex';
 import * as usdNtdExchangeRate from '../utils/UsdNtdExchangeRate';
+import * as AmericaShillerPeRatio from '../utils/AmericaShillerPeRatio';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
     console.log("Scheduling task started...");
     let message = '' ;
+
+    // 美國席勒本益比
+    const americaShillerPeRatio = await AmericaShillerPeRatio.crawler();
+    console.log("crawler americaShillerPeRatio data successfully");
+    message += `${americaShillerPeRatio[0]}美國-席勒本益比: ${americaShillerPeRatio[1]}\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
 
     // 爬蟲CNN恐懼貪婪指數
     const fearGreedIndex = await cnnFearGreedIndex.crawler();

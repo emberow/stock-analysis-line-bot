@@ -45,10 +45,9 @@ Use ngrok fordwarding URL as webhook URL, and then paste it into line develop
 原本策略為定期定額買入大盤，以獲取平均市場報酬。
 使用爬蟲每天進行數據撈取，並使用以下指標，來進行擇時買入，以獲取超越大盤報酬。
 
-<!-- 註解原因為看不到歷史圖表資料 -->
-<!-- ### [美國-S&P 500席勒通膨調整後本益比](https://www.macromicro.me/collections/34/us-stock-relative/410/us-sp500-cyclically-adjusted-price-earnings-ratio)
+### [美國-S&P 500席勒通膨調整後本益比](https://www.macromicro.me/collections/34/us-stock-relative/410/us-sp500-cyclically-adjusted-price-earnings-ratio)
 
-Robert Shiller（2013 年諾貝爾經濟學獎得主、耶魯大學教授，著有非理性繁榮）提出的 Shiller 週期性調整本益比 ，是將一般的本益比透過過去 10 年的通貨膨脹與季節因子調整，可以反映較為實質的股價評價。 -->
+Robert Shiller（2013 年諾貝爾經濟學獎得主、耶魯大學教授，著有非理性繁榮）提出的 Shiller 週期性調整本益比 ，是將一般的本益比透過過去 10 年的通貨膨脹與季節因子調整，可以反映較為實質的股價評價。
 
 ### [美國-CNN恐懼與貪婪指數](https://www.macromicro.me/collections/34/us-stock-relative/50108/cnn-fear-and-greed)
 
