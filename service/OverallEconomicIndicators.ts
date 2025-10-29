@@ -2,12 +2,11 @@ import * as financingMaintenanceRate from '../utils/FinancingMaintenanceRate';
 import * as cnnFearGreedIndex from '../utils/CnnFearGreedIndex';
 import * as vix from '../utils/Vix';
 import * as aaiiInvestorSentimentIndex from '../utils/AaiiInvestorSentimentIndex';
-import * as taiwanEconomicIndicators from '../utils/TaiwanEconomicIndicators';
 import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
-import * as taiwanUnfulfilledOrdersReduceCustomerInventory from '../utils/TaiwanUnfulfilledOrdersReduceCustomerInventory';
-import * as taiwanPMIIndex from '../utils/TaiwanPMIIndex';
 import * as usdNtdExchangeRate from '../utils/UsdNtdExchangeRate';
 import * as AmericaShillerPeRatio from '../utils/AmericaShillerPeRatio';
+import * as MarginBalance from '../utils/MarginBalance';
+
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -53,6 +52,13 @@ export const sendDataToLine = async () => {
     message += `看空: ${aaiiIndex?.[1]?.[0]}% \n`;
     message += `持平: ${aaiiIndex?.[1]?.[1]}% \n`;
     message += `看多: ${aaiiIndex?.[1]?.[2]}% \n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    const marginBalance = await MarginBalance.crawler();
+    console.log("crawler marginBalance data successfully");
+    message += `${marginBalance[0]}融資餘額: ${marginBalance[1]}\n\n`;
 
     // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
