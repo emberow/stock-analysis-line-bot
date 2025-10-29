@@ -6,7 +6,7 @@ import * as taiwanPeRatio from '../utils/TaiwanPeRatio';
 import * as usdNtdExchangeRate from '../utils/UsdNtdExchangeRate';
 import * as AmericaShillerPeRatio from '../utils/AmericaShillerPeRatio';
 import * as MarginBalance from '../utils/MarginBalance';
-
+import * as M2Supply from '../utils/M2Supply';
 import { sendMessage } from '../utils/messageSender';
 
 export const sendDataToLine = async () => {
@@ -56,9 +56,18 @@ export const sendDataToLine = async () => {
     // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
 
+    // 全球四大央行M2供給量年增率
+    const m2Supply = await M2Supply.crawler();
+    console.log("crawler m2Supply data successfully");
+    message += `${m2Supply[0]}全球四大央行M2供給量年增率: ${m2Supply[1]}%\n\n`;
+
+    // 隨機延遲 10-15 秒
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
+
+    // 台股大盤融資餘額
     const marginBalance = await MarginBalance.crawler();
     console.log("crawler marginBalance data successfully");
-    message += `${marginBalance[0]}融資餘額: ${marginBalance[1]}\n\n`;
+    message += `${marginBalance[0]}台股大盤融資餘額: ${marginBalance[1]}\n\n`;
 
     // 隨機延遲 10-15 秒
     await new Promise(resolve => setTimeout(resolve, Math.random() * 5000 + 10000));
